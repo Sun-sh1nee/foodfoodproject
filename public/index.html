@@ -1,0 +1,60 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Randomizer</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="client.js" defer></script>
+</head>
+<body>
+    <button onclick="showRandomFoods()">สุ่มอาหาร 3 รายการ</button>
+    <div id="randomFoodsList"></div>
+
+    <button onclick="openAddFoodPopup()">เพิ่มเมนูอาหาร</button>
+    <div id="addFoodPopup">
+        <label>ชื่อเมนูอาหาร:</label>
+        <input type="text" id="foodName">
+        <label id="textmer">วัตถุดิบ:</label>
+        <div id="ingredientsList">
+            <div class="ingredient-container">
+                <input type="text" class="ingredient">
+                <button class="delete-button" onclick="removeIngredient(this)">ลบ</button>
+            </div>
+        </div>
+        <button onclick="addIngredient()">เพิ่มวัตถุดิบ</button>
+        <button class="ok-button" onclick="submitFood()">ยืนยัน</button>
+        <button class="delete-button" onclick="cancelAddFood()">ยกเลิก</button>
+    </div>
+
+    <button onclick="openEditFoodPopup()">เปลี่ยนข้อมูลเมนูอาหาร</button>
+    <div id="editFoodPopup" class="popup">
+        <div class="popup-content">
+            <span class="close-btn" onclick="closeEditFoodPopup()">&times;</span>
+            <h2>เปลี่ยนข้อมูลเมนูอาหาร</h2>
+            <label>เลือกเมนูอาหาร:</label>
+            <select id="foodSelect" onchange="loadFoodDetails()"></select>
+            <label>ชื่อเมนูอาหาร:</label>
+            <input type="text" id="editFoodName">
+            <label>วัตถุดิบ:</label>
+            <div id="editIngredientsList"></div>
+            <button onclick="addEditIngredient()">เพิ่มวัตถุดิบ</button>
+            <button class="ok-button" onclick="submitEditFood()">บันทึก</button>
+            <button class="delete-button" onclick="deleteFoodFromEdit()">ลบเมนูอาหาร</button>
+        </div>
+    </div>
+
+    <label>วัตถุดิบที่มี:</label>
+    <div id="availableIngredientsList">
+        <div class="ingredient-container">
+            <input type="text" class="availableIngredient">
+            <button onclick="removeIngredient(this)">ลบ</button>
+        </div>
+    </div>
+    <button onclick="addAvailableIngredient()">เพิ่มวัตถุดิบ</button>
+    <button onclick="showAvailableFoods()">แสดงรายการอาหารที่ทำได้</button>
+    <div id="availableFoodsList"></div>
+</body>
+</html>

@@ -111,46 +111,59 @@ function closeEditFoodPopup() {
 
 const loadFoodDetails = async () => {
     try {
+        
+        const FoodSelect = document.getElementById('foodSelect');
+        const selectedFoodIndex = FoodSelect.selectedIndex;
+        const foodName = FoodSelect.options[selectedFoodIndex].text;
 
-        const FoodSelect = document.getElementById('foodSelect')
-        const selectedFoodIndex = FoodSelect.selectedIndex
-        const foodName = FoodSelect.options[selectedFoodIndex].text
+        const response = await axios.get(`${BASE_URL}/get-food-details?name=${foodName}`);
+        
+        if (!response.data.food || response.data.food.length === 0) {
+            throw new Error("ไม่พบข้อมูลเมนูอาหารที่ค้นหา");
+        }
 
-        const response = await axios.get(`${BASE_URL}/get-food-details?name=${foodName}`)
-        const foodDetails = response.data.foods[0]
+        //const foodDetails = response.data.food[0];
+        const foodDetails = response.data.food;
 
+        // Check if foodDetails or ingredients are missing
         if (!foodDetails || !foodDetails.ingredients) {
             throw new Error("ไม่พบข้อมูลส่วนผสม");
         }
 
-        document.getElementById('editFoodName').value = foodDetails.name
-        const ingredientList = document.getElementById('editIngredientsList')
-        ingredientList.style.display = 'block';
-        ingredientList.innerHTML = ''
+        // Set the food name in the edit form
+        document.getElementById('editFoodName').value = foodDetails.name;
 
+        // Prepare the ingredients list
+        const ingredientList = document.getElementById('editIngredientsList');
+        ingredientList.style.display = 'block';
+        ingredientList.innerHTML = '';
+
+        // Split ingredients string into an array and create input fields
         const Arrayingredient = foodDetails.ingredients.split(", ");
         Arrayingredient.forEach(ingredient => {
             const ingredientContainer = document.createElement('div');
             ingredientContainer.className = 'ingredient-container';
 
-            const ingredientInput = document.createElement('input')
-            ingredientInput.type = 'text'
-            ingredientInput.className = 'ingredient'
-            ingredientInput.value = ingredient
+            const ingredientInput = document.createElement('input');
+            ingredientInput.type = 'text';
+            ingredientInput.className = 'ingredient';
+            ingredientInput.value = ingredient;
 
-            const removeButton = document.createElement('button')
-            removeButton.textContent = 'ลบ'
-            removeButton.onclick = () => ingredientContainer.remove()
+            const removeButton = document.createElement('button');
+            removeButton.textContent = 'ลบ';
+            removeButton.onclick = () => ingredientContainer.remove();
 
-            ingredientContainer.appendChild(ingredientInput)
-            ingredientContainer.appendChild(removeButton)
-            ingredientList.appendChild(ingredientContainer)
-        })
+            ingredientContainer.appendChild(ingredientInput);
+            ingredientContainer.appendChild(removeButton);
+            ingredientList.appendChild(ingredientContainer);
+        });
 
     } catch (error) {
-        console.log(error.message)
+        console.log(error.message);
     }
 }
+
+
 
 
 function resetAddFoodForm() {
@@ -183,44 +196,54 @@ function addEditIngredient() {
 
 const submitEditFood = async () => {
     try {
-        const FoodSelect = document.getElementById('foodSelect')
-        const selectedFoodIndex = FoodSelect.selectedIndex
-        const foodName = FoodSelect.options[selectedFoodIndex].text
-        //const ingredients = Array.from(document.getElementsByClassName('ingredient')).map(input => input.value);
-        
-        const foodNameChange = document.querySelector('#editFoodName')
-        const ingredientElement = document.querySelectorAll('.ingredient')
-        //const ingredients = Array.from(ingredientElement).map(input => input.value);
-
-        let ingredients = ''
-        for(let i=0; i<ingredientElement.length; i++){
-            if(ingredientElement[i].value === '') continue
-            ingredients += ingredientElement[i].value
-            if(i != ingredientElement.length - 1) ingredients += ", "
-        }
-
-        let menus = {
-            name: foodNameChange.value,
-            ingredients: ingredients
-        }
-
         const ingredientList = document.getElementById('editIngredientsList')
         ingredientList.style.display = 'none';
+        document.getElementById('editFoodPopup').style.display = 'none';
+        
+        const FoodSelect = document.getElementById('foodSelect');
+        const selectedFoodIndex = FoodSelect.selectedIndex;
+        const foodName = FoodSelect.options[selectedFoodIndex].text.trim();
 
+        console.log('Selected Food Name:', foodName)
 
-        const response = await axios.put(`${BASE_URL}/edit-food/${foodName}`,  menus)
-        console.log(response.data)
+        const foodNameChange = document.querySelector('#editFoodName').value.trim();
+        const ingredientElements = document.querySelectorAll('.ingredient');
+
+        let ingredients = [];
+        ingredientElements.forEach(element => {
+            const ingredientValue = element.value.trim();
+            if (ingredientValue) {
+                ingredients.push(ingredientValue);
+            }
+        });
+
+        const menus = {
+            name: foodNameChange,
+            ingredients: ingredients.join(', ')
+        };
+
+        console.log('Sending request with:', { foodName, menus });
+
+        const response = await axios.put(`${BASE_URL}/edit-food/${foodName}`, menus);
+
         if (response.data.message === "OK") {
             document.getElementById('editFoodPopup').style.display = 'none';
         } else {
-            console.error('Error updating food details');
+            console.error('Error updating food details:', response.data.message);
         }
+        
 
     } catch (error) {
-        console.log(error.message)
+        if (error.response) {
+            console.error('Error response:', error.response.status, error.response.data);
+        } else if (error.request) {
+            console.error('Error request:', error.request);
+        } else {
+            console.error('Error message:', error.message);
+        }
     }
-
 }
+
 
 function deleteFoodFromEdit() {
     const selectedFoodIndex = document.getElementById('foodSelect').value;
@@ -254,25 +277,37 @@ function addAvailableIngredient() {
 // SHOW AVAILABLE
 
 const showAvailableFoods = async () => {
-    let available = document.getElementsByClassName('availableIngredient');
-    const availableIngredient = Array.from(available).map(input => input.value);
-
     try {
-        const response = await axios.post('/available-foods', { availableIngredients: availableIngredient });
+        const availableElements = document.getElementsByClassName('availableIngredient');
+        const availableIngredients = Array.from(availableElements).map(input => input.value.trim()).filter(value => value);
+
+        const response = await axios.post('/available-foods', { availableIngredients });
+
+        // Log the full response for debugging
+        console.log('API Response:', response.data);
+
+        // Verify the response format
+        if (!response.data || !Array.isArray(response.data.availableFoods)) {
+            throw new Error('Unexpected response format');
+        }
+
         const availableFoodsList = document.getElementById('availableFoodsList');
         availableFoodsList.innerHTML = '';
 
-        const uniqueFoods = new Set(response.data.foodMenu.map(food => food.name));
+        const uniqueFoods = new Set(response.data.availableFoods.map(food => food.name));
+
         uniqueFoods.forEach(foodName => {
             const foodItem = document.createElement('div');
             foodItem.textContent = foodName;
-            foodItem.onclick = function() { showFoodIngredients(foodName); };
+            foodItem.style.cursor = 'pointer';
+            foodItem.onclick = () => showFoodIngredients(foodName);
             availableFoodsList.appendChild(foodItem);
         });
     } catch (error) {
-        console.error('Error fetching available foods:', error);
+        console.error('Error fetching available foods:', error.message || error);
     }
-}
+};
+
 
 
 const showFoodIngredients = async (foodName) => {
@@ -297,15 +332,4 @@ const showFoodIngredients = async (foodName) => {
         console.log(error.message)
     }
 }
-
-// function showFoodIngredients(foodName) {
-//     axios.get('/food-menu')
-//         .then(response => {
-//             const food = response.data.foodMenu.find(f => f.name === foodName);
-//             alert(`วัตถุดิบสำหรับ ${food.name}: ${food.ingredients.join(', ')}`);
-//         })
-//         .catch(error => {
-//             console.error(error);
-//         });
-// }
 

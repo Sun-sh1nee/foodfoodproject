@@ -66,7 +66,7 @@ app.post('/add-food', async (req, res) => {
     } catch (error) {
         const statusCode = error.statusCode || 500;
         res.status(statusCode).json({ 
-            message: 'Error adding food',
+            message: error.message,
             errorMessage: error.message
         });
     }
@@ -132,47 +132,74 @@ app.put('/edit-food/:name', async (req, res) => {
         const name = req.params.name;
         const updatedMenus = req.body;
 
+        console.log('Name:', name); // Log the name parameter
+        console.log('Updated Menus:', updatedMenus); // Log the update payload
+
+        // Perform the update operation
         const { data, error } = await supabase
             .from('menus')
             .update(updatedMenus)
-            .eq('name', name);
+            .eq('name', name)
+            .single(); // Use .single() if you expect a single row to be updated
 
-        if (error) throw error;
-
-        if (data.length === 0) {
-            return res.status(404).json({ message: 'Food item not found' });
+        if (error) {
+            console.error('Supabase error:', error.message);
+            return res.status(500).json({ message: 'Error updating food details', errorMessage: error.message });
         }
 
-        res.json({ message: "OK", data: updatedMenus });
-    } catch (error) {
-        res.status(500).json({ message: 'Error updating food details' });
+        console.log("is data : ", data)
+        // if (!data) {
+        //     return res.status(404).json({ message: 'ไม่พบเมนูอาหาร' });
+        // }
+
+        res.json({
+            message: 'OK',
+            data: updatedMenus
+        });
+    } catch (err) {
+        console.error('Server error:', err.message);
+        res.status(500).json({ message: 'Error updating food details', errorMessage: err.message });
     }
-});
+})
+
 
 // Function to get available foods based on ingredients
 app.post('/available-foods', async (req, res) => {
     try {
         const { availableIngredients } = req.body;
+
+        // Validate availableIngredients
         if (!availableIngredients || !Array.isArray(availableIngredients)) {
             return res.status(400).json({ message: 'Bad Request: availableIngredients must be an array' });
         }
 
+        // Fetch all foods from the 'menus' table
         const { data: results, error } = await supabase
             .from('menus')
             .select('*');
 
-        if (error) throw error;
+        if (error) {
+            throw error;
+        }
 
-        // Filter available foods based on ingredients (pseudo-code)
+        // Filter available foods based on ingredients
         const availableFoods = results.filter(food => {
-            return availableIngredients.every(ingredient => food.ingredients.includes(ingredient));
+            // Assuming 'food.ingredients' is a comma-separated string
+            const ingredientsArray = food.ingredients.split(', ').map(ingredient => ingredient.trim());
+            return availableIngredients.every(ingredient => ingredientsArray.includes(ingredient));
         });
 
+        // Log the available foods for debugging
+        console.log('Available Foods:', availableFoods);
+
+        // Respond with available foods
         res.json({ availableFoods });
     } catch (error) {
+        console.error('Error fetching available foods:', error.message);
         res.status(500).json({ message: 'Error fetching available foods' });
     }
 });
+
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);

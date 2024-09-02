@@ -17,8 +17,6 @@ const showRandomFoods = async () => {
     } catch (error) {
         console.log("ERROR ", error.message);
     }
-    
-  
 }
 
 function openAddFoodPopup() {

@@ -8,6 +8,15 @@ const mysql = require('mysql2/promise')
 
 
 let db = null
+// const initMySQL = async () => {
+//     db = await mysql.createConnection({
+//         host: 'fdb1030.awardspace.net',
+//         user: '4513320_foodforrandom',
+//         password: 'zKfb!UeD8a(5rNGM',
+//         database: '4513320_foodforrandom',
+//         port: 3306
+//     })
+// }
 const initMySQL = async () => {
     db = await mysql.createConnection({
         host: 'localhost',
@@ -16,7 +25,6 @@ const initMySQL = async () => {
         database: 'food_menu'
     })
 }
-
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, 'public')))
 

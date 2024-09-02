@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3000'
+const BASE_URL = ''
 
 const showRandomFoods = async () => {
     try {
@@ -88,6 +88,7 @@ const openEditFoodPopup = async () => {
     try {
         const foodSelect = document.getElementById('foodSelect');
         foodSelect.innerHTML = '';
+        document.getElementById('editFoodName').value = ''
         const response = await axios.get('/food-menu')
         response.data.foodMenu.forEach((food, index) => {
             const option = document.createElement('option')
@@ -103,6 +104,8 @@ const openEditFoodPopup = async () => {
 }
 
 function closeEditFoodPopup() {
+    const ingredientList = document.getElementById('editIngredientsList')
+    ingredientList.style.display = 'none';
     document.getElementById('editFoodPopup').style.display = 'none';
 }
 
@@ -122,6 +125,7 @@ const loadFoodDetails = async () => {
 
         document.getElementById('editFoodName').value = foodDetails.name
         const ingredientList = document.getElementById('editIngredientsList')
+        ingredientList.style.display = 'block';
         ingredientList.innerHTML = ''
 
         const Arrayingredient = foodDetails.ingredients.split(", ");
@@ -183,7 +187,8 @@ const submitEditFood = async () => {
         const selectedFoodIndex = FoodSelect.selectedIndex
         const foodName = FoodSelect.options[selectedFoodIndex].text
         //const ingredients = Array.from(document.getElementsByClassName('ingredient')).map(input => input.value);
-
+        
+        const foodNameChange = document.querySelector('#editFoodName')
         const ingredientElement = document.querySelectorAll('.ingredient')
         //const ingredients = Array.from(ingredientElement).map(input => input.value);
 
@@ -195,9 +200,12 @@ const submitEditFood = async () => {
         }
 
         let menus = {
-            name: foodName,
+            name: foodNameChange.value,
             ingredients: ingredients
         }
+
+        const ingredientList = document.getElementById('editIngredientsList')
+        ingredientList.style.display = 'none';
 
 
         const response = await axios.put(`${BASE_URL}/edit-food/${foodName}`,  menus)

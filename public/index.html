@@ -34,7 +34,9 @@
             <span class="close-btn" onclick="closeEditFoodPopup()">&times;</span>
             <h2>เปลี่ยนข้อมูลเมนูอาหาร</h2>
             <label>เลือกเมนูอาหาร:</label>
-            <select id="foodSelect" onchange="loadFoodDetails()"></select>
+            <div class="custom-select">
+                <select id="foodSelect" onchange="loadFoodDetails()"></select>
+            </div>
             <label>ชื่อเมนูอาหาร:</label>
             <input type="text" id="editFoodName">
             <label>วัตถุดิบ:</label>

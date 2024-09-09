@@ -11,9 +11,28 @@ body {
     justify-content: center;
     height: 100vh;
 }
+
+.container {
+    border: 1px solid red;
+    height: 80%;
+}
+
 #randomFoodsList .random{
     text-align: center;
-    margin: 5px;
+    padding: 20px;
+    font-size: 1.5rem;
+}
+
+#randomFoodsList .random:hover{
+    background-color: rgb(242, 242, 242);
+    color: rgb(37, 37, 37);
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+#rnfunder {
+    text-align: center;
+    color: red;
 }
 
 button {
@@ -62,11 +81,9 @@ select {
 
 }
 #addFoodPopup, #editFoodPopup {
-    background-color: white;
+    background-color: transparent;
     padding: 20px;
-    border: 1px solid #ccc;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -92,16 +109,50 @@ select {
     padding-bottom: 10px;
 }
 
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.popup-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 65%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+
 .close-btn {
-    height: 25px;
-    width: 25px;
-    border-radius: 50%;
-    background-color: red;
-    color: white;
-    display: flex;
-    align-items: center;
+    color: #aaa;
+    float: right;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#loadingIndicator {
     text-align: center;
-    justify-content: center;
+    margin: 20px 0;
 }
 
 .ok-button {
@@ -134,26 +185,64 @@ select {
     margin-left: 5px;
 }
 
-@media (max-width: 600px) {
-    body {
-        height: auto;
-        padding: 20px;
-    }
+#foodIngredientsPopup .popup-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 50%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
 
+#foodIngredientsList p{
+    font-size: 1.2rem;
+    margin-left: 30px;
+}
+
+#foodName {
+    margin-bottom: 30px;
+}
+
+#foodIngredientsList {
+    margin-top: 20px;
+}
+
+@media (max-width: 600px) {
     button {
         width: 100%;
-        margin: 5px 0;
+        font-size: 14px;
     }
 
     #addFoodPopup, #editFoodPopup {
-        width: 60%;
-        max-width: none;
+        width: 90%;
+        margin: auto;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+    button {
+        width: 80%;
+        font-size: 15px;
     }
 
-    .ingredient-container button {
-        background-color: #FF0000;
-        margin-left: 5px;
-        width: 30%;
+    #addFoodPopup, #editFoodPopup {
+        width: 70%;
+        margin: auto;
     }
-    
+}
+
+@media (min-width: 1025px) {
+    button {
+        width: auto;
+        font-size: 16px;
+    }
+
+    #addFoodPopup, #editFoodPopup {
+        width: 50%;
+        margin: auto;
+    }
 }

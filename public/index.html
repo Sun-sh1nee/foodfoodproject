@@ -6,13 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Randomizer</title>
     <link rel="stylesheet" href="styles.css">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <button onclick="showRandomFoods()">สุ่มอาหาร 3 รายการ</button>
-    <div id="randomFoodsList"></div>
+    
+    <div id="randomFoodsPopup" class="popup">
+        <div class="popup-content">
+            <span class="close-btn" onclick="closeRandomFoodsPopup()">&times;</span>
+            <h2>สุ่มอาหารเองจ้า</h2>
+            <div id="loadingIndicator" style="display:none;">
+                <i class="fas fa-spinner fa-spin"></i> Loading...
+            </div>
+            <div id="randomFoodsList"></div>
+            <p id="rnfunder">( กดเพื่อดูส่วนประกอบได้นะจ้ะ )</p>
+        </div>
+    </div>
 
-    <button onclick="openAddFoodPopup()">เพิ่มเมนูอาหาร</button>
+    <div id="foodIngredientsPopup" class="popup">
+        <div class="popup-content">
+            <span class="close-btn" onclick="closeFoodIngredientsPopup()">×</span>
+            <h2 id="foodName"></h2>
+            <div id="foodIngredientsList"></div>
+        </div>
+    </div>
+    
+    <button onclick="showRandomFoods()">
+        <i class="fas fa-random"></i> สุ่มอาหาร 3 รายการ
+    </button>
+    <div id="randomFoodsPopup" class="popup">
+        <div class="popup-content">
+            <span class="close-btn" onclick="closeRandomFoodsPopup()">&times;</span>
+            <h2>Random Foods</h2>
+            <div id="randomFoodsList"></div>
+        </div>
+    </div>
+
+    <button onclick="openAddFoodPopup()"><i class="fas fa-plus"></i> เพิ่มเมนูอาหาร</button>
     <div id="addFoodPopup">
         <label>ชื่อเมนูอาหาร:</label>
         <input type="text" id="foodName">
@@ -28,7 +57,7 @@
         <button class="delete-button" onclick="cancelAddFood()">ยกเลิก</button>
     </div>
 
-    <button onclick="openEditFoodPopup()">เปลี่ยนข้อมูลเมนูอาหาร</button>
+    <button onclick="openEditFoodPopup()"><i class="fas fa-edit"></i> เปลี่ยนข้อมูลเมนูอาหาร</button>
     <div id="editFoodPopup" class="popup">
         <div class="popup-content">
             <span class="close-btn" onclick="closeEditFoodPopup()">&times;</span>

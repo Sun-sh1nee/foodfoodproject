@@ -42,12 +42,6 @@ const showRandomFoods = async () => {
                 foodItem.onclick = () => showIngredientsPopup(food.name);
                 randomFoodsList.appendChild(foodItem);
                 console.log(food.name)
-
-                // const foodItem = document.createElement('p');
-                // foodItem.textContent = food.name;
-                // foodItem.style.cursor = 'pointer';
-                // foodItem.onclick = () => showIngredientsPopup(food.ingredients);
-                // randomFoodsList.appendChild(foodItem);
             })
             document.getElementById('randomFoodsPopup').style.display = 'block';
             }, 500);
@@ -85,6 +79,16 @@ function closeFoodIngredientsPopup() {
 function closeRandomFoodsPopup() {
     document.getElementById('randomFoodsPopup').style.display = 'none';
 }
+
+function closeAddFoodPopup() {
+    document.getElementById('addFoodPopup').style.display = 'none';
+}
+
+function closeEditFoodPopup() {
+    document.getElementById('editFoodPopup').style.display = 'none';
+}
+
+
 
 function openAddFoodPopup() {
     // รีเซ็ตฟอร์มก่อนเปิดฟอร์มการเพิ่มเมนูอาหาร

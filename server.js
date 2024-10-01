@@ -29,8 +29,10 @@ app.get('/random-food', async (req, res) => {
             .from('menus')
             .select('*');
         
-        if (error) throw error;
-
+        if (error){
+            console.log(error)
+            throw error;
+        }
         const randomFoods = [];
         while (randomFoods.length < 3 && menus.length > 0) {
             const randomIndex = Math.floor(Math.random() * menus.length);
@@ -43,7 +45,7 @@ app.get('/random-food', async (req, res) => {
         }
         res.json({ foods: randomFoods });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: "error.message "});
     }
 });
 

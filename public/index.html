@@ -3,14 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food Randomizer</title>
+    <title>Food Recipe App</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="navbar-brand">Food Recipe App</div>
-        <div class="navbar-menu">
+    <div class="container">
+        <h1>Food Recipe App</h1>
+        <input type="text" id="searchBar" placeholder="Search foods or ingredients">
+        <div class="add-food-section">
+            <h2>Add New Food</h2>
+            <input type="text" id="foodName" placeholder="Food Name">
+            <input type="text" id="ingredients" placeholder="Ingredients">
+            <button id="addFoodButton">+ Add Food</button>
+        </div>
+        <div class="buttons">
             <button onclick="showRandomFoods()">
                 <i class="fas fa-random"></i> Get Random Foods
             </button>
@@ -21,75 +28,69 @@
                 <i class="fas fa-edit"></i> Edit Foods
             </button>
         </div>
-    </nav>
-
-    <div id="randomFoodsPopup" class="popup">
-        <div class="popup-content">
-            <span class="close-btn" onclick="closeRandomFoodsPopup()">×</span>
-            <h2>สุ่มอาหารเองจ้า</h2>
-            <div id="loadingIndicator" style="display:none;">
-                <i class="fas fa-spinner fa-spin"></i> Loading...
-            </div>
-            <div id="randomFoodsList"></div>
-            <p id="rnfunder">( กดเพื่อดูส่วนประกอบได้นะจ้ะ )</p>
-        </div>
-    </div>
-
-    <div id="foodIngredientsPopup" class="popup">
-        <div class="popup-content">
-            <span class="close-btn" onclick="closeFoodIngredientsPopup()">×</span>
-            <h2 id="foodName"></h2>
-            <div id="foodIngredientsList"></div>
-        </div>
-    </div>
-
-    <div id="addFoodPopup" class="popup">
-        <div class="popup-content">
-            <span class="close-btn" onclick="closeAddFoodPopup()">×</span>
-            <label>ชื่อเมนูอาหาร:</label>
-            <input type="text" id="foodName">
-            <label id="textmer">วัตถุดิบ:</label>
-            <div id="ingredientsList">
-                <div class="ingredient-container">
-                    <input type="text" class="ingredient">
-                    <button class="delete-button" onclick="removeIngredient(this)">ลบ</button>
+        <div id="randomFoodsPopup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn" onclick="closeRandomFoodsPopup()">×</span>
+                <h2>สุ่มอาหารเองจ้า</h2>
+                <div id="loadingIndicator" style="display:none;">
+                    <i class="fas fa-spinner fa-spin"></i> Loading...
                 </div>
+                <div id="randomFoodsList"></div>
+                <p id="rnfunder">( กดเพื่อดูส่วนประกอบได้นะจ้ะ )</p>
             </div>
-            <button onclick="addIngredient()">เพิ่มวัตถุดิบ</button>
-            <button class="ok-button" onclick="submitFood()">ยืนยัน</button>
-            <button class="delete-button" onclick="cancelAddFood()">ยกเลิก</button>
         </div>
-    </div>
-
-    <div id="editFoodPopup" class="popup">
-        <div class="popup-content">
-            <span class="close-btn" onclick="closeEditFoodPopup()">×</span>
-            <h2>เปลี่ยนข้อมูลเมนูอาหาร</h2>
-            <label>เลือกเมนูอาหาร:</label>
-            <div class="custom-select">
-                <select id="foodSelect" onchange="loadFoodDetails()"></select>
+        <div id="foodIngredientsPopup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn" onclick="closeFoodIngredientsPopup()">×</span>
+                <h2 id="foodName"></h2>
+                <div id="foodIngredientsList"></div>
             </div>
-            <label>ชื่อเมนูอาหาร:</label>
-            <input type="text" id="editFoodName">
-            <label>วัตถุดิบ:</label>
-            <div id="editIngredientsList"></div>
-            <button onclick="addEditIngredient()">เพิ่มวัตถุดิบ</button>
-            <button class="ok-button" onclick="submitEditFood()">บันทึก</button>
-            <button class="delete-button" onclick="deleteFoodFromEdit()">ลบเมนูอาหาร</button>
         </div>
-    </div>
-
-    <label>วัตถุดิบที่มี:</label>
-    <div id="availableIngredientsList">
-        <div class="ingredient-container">
-            <input type="text" class="availableIngredient">
-            <button onclick="removeIngredient(this)">ลบ</button>
+        <div id="addFoodPopup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn" onclick="closeAddFoodPopup()">×</span>
+                <label>ชื่อเมนูอาหาร:</label>
+                <input type="text" id="foodName">
+                <label id="textmer">วัตถุดิบ:</label>
+                <div id="ingredientsList">
+                    <div class="ingredient-container">
+                        <input type="text" class="ingredient">
+                        <button class="delete-button" onclick="removeIngredient(this)">ลบ</button>
+                    </div>
+                </div>
+                <button onclick="addIngredient()">เพิ่มวัตถุดิบ</button>
+                <button class="ok-button" onclick="submitFood()">ยืนยัน</button>
+                <button class="delete-button" onclick="cancelAddFood()">ยกเลิก</button>
+            </div>
         </div>
+        <div id="editFoodPopup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn" onclick="closeEditFoodPopup()">×</span>
+                <h2>เปลี่ยนข้อมูลเมนูอาหาร</h2>
+                <label>เลือกเมนูอาหาร:</label>
+                <div class="custom-select">
+                    <select id="foodSelect" onchange="loadFoodDetails()"></select>
+                </div>
+                <label>ชื่อเมนูอาหาร:</label>
+                <input type="text" id="editFoodName">
+                <label>วัตถุดิบ:</label>
+                <div id="editIngredientsList"></div>
+                <button onclick="addEditIngredient()">เพิ่มวัตถุดิบ</button>
+                <button class="ok-button" onclick="submitEditFood()">บันทึก</button>
+                <button class="delete-button" onclick="deleteFoodFromEdit()">ลบเมนูอาหาร</button>
+            </div>
+        </div>
+        <label>วัตถุดิบที่มี:</label>
+        <div id="availableIngredientsList">
+            <div class="ingredient-container">
+                <input type="text" class="availableIngredient">
+                <button onclick="removeIngredient(this)">ลบ</button>
+            </div>
+        </div>
+        <button onclick="addAvailableIngredient()">เพิ่มวัตถุดิบ</button>
+        <button onclick="showAvailableFoods()">แสดงรายการอาหารที่ทำได้</button>
+        <div id="availableFoodsList"></div>
     </div>
-    <button onclick="addAvailableIngredient()">เพิ่มวัตถุดิบ</button>
-    <button onclick="showAvailableFoods()">แสดงรายการอาหารที่ทำได้</button>
-    <div id="availableFoodsList"></div>
-
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="client.js" defer></script>

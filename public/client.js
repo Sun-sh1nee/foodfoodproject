@@ -53,22 +53,26 @@ const showRandomFoods = async () => {
 
 const showIngredientsPopup = async (name) => {
     
-    const foodIngredientsPopup = document.getElementById('foodIngredientsPopup');
-    const foodNamePopup = document.getElementById('foodName');
-    const foodIngredientsList = document.getElementById('foodIngredientsList');
-    foodIngredientsList.innerHTML = '';
-    foodNamePopup.innerHTML = `ส่วนประกอบของ <U>${name}</U>`
-    const response = await axios.get(`${BASE_URL}/get-food-details?name=${name}`);
-    const foodDetails = response.data.food;
-    const Arrayingredient = foodDetails.ingredients.split(", ");
-
-    Arrayingredient.forEach(ingredient => {
-        const ingredientItem = document.createElement('p');
-        ingredientItem.textContent = ingredient;
-        foodIngredientsList.appendChild(ingredientItem);
-    });
-
-    foodIngredientsPopup.style.display = 'block';
+    try{
+        const foodIngredientsPopup = document.getElementById('foodIngredientsPopup');
+        const foodNamePopup = document.getElementById('foodName');
+        const foodIngredientsList = document.getElementById('foodIngredientsList');
+        foodIngredientsList.innerHTML = '';
+        foodNamePopup.innerHTML = `ส่วนประกอบของ <U>${name}</U>`
+        const response = await axios.get(`${BASE_URL}/get-food-details?name=${name}`);
+        const foodDetails = response.data.food;
+        const Arrayingredient = foodDetails.ingredients.split(", ");
+    
+        Arrayingredient.forEach(ingredient => {
+            const ingredientItem = document.createElement('p');
+            ingredientItem.textContent = ingredient;
+            foodIngredientsList.appendChild(ingredientItem);
+        });
+    
+        foodIngredientsPopup.style.display = 'block';
+    }catch{
+        console.log(error.message)
+    }
 
 }
 

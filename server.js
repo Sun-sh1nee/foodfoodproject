@@ -23,31 +23,6 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Function to get random food items
-app.get('/random-food', async (req, res) => {
-    try {
-        const { data: menus, error } = await supabase
-            .from('menus')
-            .select('*');
-        
-        if (error){
-            console.log(error)
-            throw error;
-        }
-        const randomFoods = [];
-        while (randomFoods.length < 3 && menus.length > 0) {
-            const randomIndex = Math.floor(Math.random() * menus.length);
-            const food = menus[randomIndex];
-            if (!randomFoods.includes(food)) {
-                randomFoods.push(food);
-            }
-
-            if (menus.length === randomFoods.length) break;
-        }
-        res.json({ foods: randomFoods });
-    } catch (error) {
-        res.status(500).json({ message: "error.message "});
-    }
-});
 
 // Function to add a new food item
 app.post('/add-food', async (req, res) => {
@@ -106,28 +81,6 @@ app.get('/food-menu', async (req, res) => {
     }
 });
 
-// Function to get food details
-app.get('/get-food-details', async (req, res) => {
-    try {
-        const { name } = req.query;
-        const { data: food, error } = await supabase
-            .from('menus')
-            .select('*')
-            .eq('name', name)
-            .single();
-
-        if (error) throw error;
-
-        if (!food) {
-            return res.status(404).json({ message: 'Food item not found' });
-        }
-
-        res.json({ food });
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching food details' });
-    }
-});
-
 // Function to update a food item
 app.put('/edit-food/:name', async (req, res) => {
     try {
@@ -150,9 +103,6 @@ app.put('/edit-food/:name', async (req, res) => {
         }
 
         console.log("is data : ", data)
-        // if (!data) {
-        //     return res.status(404).json({ message: 'ไม่พบเมนูอาหาร' });
-        // }
 
         res.json({
             message: 'OK',
@@ -163,45 +113,6 @@ app.put('/edit-food/:name', async (req, res) => {
         res.status(500).json({ message: 'Error updating food details', errorMessage: err.message });
     }
 })
-
-
-// Function to get available foods based on ingredients
-app.post('/available-foods', async (req, res) => {
-    try {
-        const { availableIngredients } = req.body;
-
-        // Validate availableIngredients
-        if (!availableIngredients || !Array.isArray(availableIngredients)) {
-            return res.status(400).json({ message: 'Bad Request: availableIngredients must be an array' });
-        }
-
-        // Fetch all foods from the 'menus' table
-        const { data: results, error } = await supabase
-            .from('menus')
-            .select('*');
-
-        if (error) {
-            throw error;
-        }
-
-        // Filter available foods based on ingredients
-        const availableFoods = results.filter(food => {
-            // Assuming 'food.ingredients' is a comma-separated string
-            const ingredientsArray = food.ingredients.split(', ').map(ingredient => ingredient.trim());
-            return availableIngredients.every(ingredient => ingredientsArray.includes(ingredient));
-        });
-
-        // Log the available foods for debugging
-        console.log('Available Foods:', availableFoods);
-
-        // Respond with available foods
-        res.json({ availableFoods });
-    } catch (error) {
-        console.error('Error fetching available foods:', error.message);
-        res.status(500).json({ message: 'Error fetching available foods' });
-    }
-});
-
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);

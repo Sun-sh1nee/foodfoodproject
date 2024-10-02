@@ -1,20 +1,19 @@
+*{
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f5f5f5;
     color: #333;
 }
 
-.container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
 h1 {
     color: #6a1b9a;
+}
+
+li {
+    font-size: 0.8rem;
 }
 
 input[type="text"] {
@@ -39,8 +38,48 @@ button:hover {
     background-color: #4a148c;
 }
 
-.add-food-section {
-    margin: 20px 0;
+
+.text-center {
+    text-align: center;
+    left: auto;
+    right: auto;
+}
+
+.container-menu-explorer {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#menu-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+#menu-bar #show-option {
+    margin-right: 10px;
+    font-size: 0.9rem;
+}
+
+#menu-show {
+    display: relative;
+}
+
+#searchBar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px; /* Optional padding */
+}
+
+
+#searchClear{
+    margin: 0 0 0 10px;
 }
 
 .buttons {
@@ -48,30 +87,113 @@ button:hover {
 }
 
 .popup {
+
     display: none;
     position: fixed;
-    top: 0;
+    z-index: 1;
     left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
 }
 
 .popup-content {
     background-color: #fff;
+    margin: 10% auto;
     padding: 20px;
-    border-radius: 8px;
-    width: 80%;
-    max-width: 500px;
-    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 65%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
 }
 
 .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+    color: #aaa;
+    float: right;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #000;
+    text-decoration: none;
     cursor: pointer;
-    font-size: 20px;
+}
+
+
+.ok-button {
+    float: right;
+    font-size: 0.9rem;
+    padding: 10px 30px;
+}
+
+.underAddPopup {
+    display: flex;
+    justify-content: space-between; /* Spreads items across the width */
+    align-items: center; /* Centers items vertically */
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    position: relative;
+}
+.text-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.underAddPopup button {
+    margin-left: auto; /* Push the button to the right */
+    border: none;
+    padding: 10px 30px;
+    cursor: pointer;
+    border-radius: 4px;
+    
+}
+
+.success {
+    color: rgb(17, 184, 17);
+    font-weight: 800;
+}
+
+.div-menu {
+    box-sizing: border-box;
+    box-shadow: 0px 0px 5px ;
+    border-radius: 8px;
+    margin: 15px 100px;
+    padding: 10px;
+}
+
+.button2 {
+    justify-content: center;
+    display: flex;
+    justify-content: space-around;
+}
+
+.button-edit {
+    width: 48%;
+    background-color: white;
+    border: 2px solid #6a1b9a;
+    margin: 0 0 0px 0;
+    color: #6a1b9a;
+}
+.button-edit:hover {
+    background-color: #994bca;
+    border: 2px solid #994bca;
+    color: white;
+}
+
+.button-delete {
+    width: 48%;
+    background-color: #6a1b9a;
+    margin: 0 0 0px 0;
+    color: white;
+}
+.button-delete:hover {
+    background-color: #4a148c;
 }

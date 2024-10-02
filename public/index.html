@@ -9,87 +9,68 @@
 </head>
 <body>
     <div class="container">
-        <h1>Food Recipe App</h1>
-        <input type="text" id="searchBar" placeholder="Search foods or ingredients">
-        <div class="add-food-section">
-            <h2>Add New Food</h2>
-            <input type="text" id="foodName" placeholder="Food Name">
-            <input type="text" id="ingredients" placeholder="Ingredients">
-            <button id="addFoodButton">+ Add Food</button>
-        </div>
-        <div class="buttons">
-            <button onclick="showRandomFoods()">
-                <i class="fas fa-random"></i> Get Random Foods
-            </button>
-            <button onclick="openAddFoodPopup()">
-                <i class="fas fa-plus"></i> Add Food
-            </button>
-            <button onclick="openEditFoodPopup()">
-                <i class="fas fa-edit"></i> Edit Foods
-            </button>
-        </div>
-        <div id="randomFoodsPopup" class="popup">
-            <div class="popup-content">
-                <span class="close-btn" onclick="closeRandomFoodsPopup()">×</span>
-                <h2>สุ่มอาหารเองจ้า</h2>
-                <div id="loadingIndicator" style="display:none;">
+        <h1 style="text-align: center;">Food Recipe App</h1>
+        <div class="container-menu-explorer">
+            <div id="menu-bar">
+                <h2>MENU</h2>
+                <div class="buttons">
+                    <button id="show-option" class="not-active" onclick="togleShowOption()">
+                        <i class="fa-solid fa-angle-down"></i> Show Menus
+                    </button>
+                    <button onclick="openAddFoodPopup()">
+                        <i class="fas fa-plus"></i> Add Food
+                    </button>
+                </div>
+            </div>
+            <div id="menu-show" style="display: none;">
+                <div id="searchBar">
+                    <input type="text" id="searchText" placeholder="Search foods or ingredients" onkeyup="searchMenu()">
+                    <button id="searchClear" onclick="clearSearch()"><i class="fa-solid fa-x"></i></button>
+                </div>
+                <div id="loadingIndicator" style="display:none; text-align: center;">
                     <i class="fas fa-spinner fa-spin"></i> Loading...
                 </div>
-                <div id="randomFoodsList"></div>
-                <p id="rnfunder">( กดเพื่อดูส่วนประกอบได้นะจ้ะ )</p>
+                <div id="container-showMenu"></div>
             </div>
-        </div>
-        <div id="foodIngredientsPopup" class="popup">
-            <div class="popup-content">
-                <span class="close-btn" onclick="closeFoodIngredientsPopup()">×</span>
-                <h2 id="foodName"></h2>
-                <div id="foodIngredientsList"></div>
-            </div>
-        </div>
-        <div id="addFoodPopup" class="popup">
-            <div class="popup-content">
-                <span class="close-btn" onclick="closeAddFoodPopup()">×</span>
-                <label>ชื่อเมนูอาหาร:</label>
-                <input type="text" id="foodName">
-                <label id="textmer">วัตถุดิบ:</label>
-                <div id="ingredientsList">
-                    <div class="ingredient-container">
-                        <input type="text" class="ingredient">
-                        <button class="delete-button" onclick="removeIngredient(this)">ลบ</button>
+
+            <div id="editFoodPopup" class="popup" style="display: none;">
+                <div class="popup-content">
+                    <span class="close-btn" onclick="closeEditFoodPopup()"><i class="fa-solid fa-x"></i></span>
+                    <h2>แก้ไขเมนูอาหาร</h2>
+                    <label>ชื่อเมนูอาหาร:</label>
+                    <input type="text" id="foodNameEdit" value="asd">
+                    <label>วัตถุดิบ:</label>
+                    <input type="text" id="ingredientsListEdit">
+                    <p>** ถ้าต้องการใส่วัตถุดิบมากกว่า 1 ใส่ <mark> , ( comma ) </mark> หลังวัตถุดิบ<br>ตัวอย่าง : ไก่, ไข่</p>
+                    <div class="underEditPopup">
+                        <p id="text-edit" class="text-center" style="color: red; margin: 0;"></p>
+                        <div id="successEdit" class="success text-center" style="display:none;">
+                            เรียบร้อยจ้า <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <button class="ok-button" onclick="submitEditFood()">ยืนยัน</button>   
                     </div>
                 </div>
-                <button onclick="addIngredient()">เพิ่มวัตถุดิบ</button>
-                <button class="ok-button" onclick="submitFood()">ยืนยัน</button>
-                <button class="delete-button" onclick="cancelAddFood()">ยกเลิก</button>
             </div>
-        </div>
-        <div id="editFoodPopup" class="popup">
-            <div class="popup-content">
-                <span class="close-btn" onclick="closeEditFoodPopup()">×</span>
-                <h2>เปลี่ยนข้อมูลเมนูอาหาร</h2>
-                <label>เลือกเมนูอาหาร:</label>
-                <div class="custom-select">
-                    <select id="foodSelect" onchange="loadFoodDetails()"></select>
+
+            <div id="addFoodPopup" class="popup" style="display: none;">
+                <div class="popup-content">
+                    <span class="close-btn" onclick="closeAddFoodPopup()"><i class="fa-solid fa-x"></i></span>
+                    <h2>เพิ่มเมนูอาหาร</h2>
+                    <label>ชื่อเมนูอาหาร:</label>
+                    <input type="text" id="foodNameAdd">
+                    <label>วัตถุดิบ:</label>
+                    <input type="text" id="ingredientsListAdd">
+                    <p>** ถ้าต้องการใส่วัตถุดิบมากกว่า 1 ใส่ <mark> , ( comma ) </mark> หลังวัตถุดิบ<br>ตัวอย่าง : ไก่, ไข่</p>
+                    <div class="underAddPopup">
+                        <p id="text-add" class="text-center" style="color: red; margin: 0;"></p>
+                        <div id="successAdd" class="success text-center" style="display:none;">
+                            เรียบร้อยจ้า <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <button class="ok-button" onclick="submitAddFood()">ยืนยัน</button>   
+                    </div>
                 </div>
-                <label>ชื่อเมนูอาหาร:</label>
-                <input type="text" id="editFoodName">
-                <label>วัตถุดิบ:</label>
-                <div id="editIngredientsList"></div>
-                <button onclick="addEditIngredient()">เพิ่มวัตถุดิบ</button>
-                <button class="ok-button" onclick="submitEditFood()">บันทึก</button>
-                <button class="delete-button" onclick="deleteFoodFromEdit()">ลบเมนูอาหาร</button>
             </div>
         </div>
-        <label>วัตถุดิบที่มี:</label>
-        <div id="availableIngredientsList">
-            <div class="ingredient-container">
-                <input type="text" class="availableIngredient">
-                <button onclick="removeIngredient(this)">ลบ</button>
-            </div>
-        </div>
-        <button onclick="addAvailableIngredient()">เพิ่มวัตถุดิบ</button>
-        <button onclick="showAvailableFoods()">แสดงรายการอาหารที่ทำได้</button>
-        <div id="availableFoodsList"></div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>

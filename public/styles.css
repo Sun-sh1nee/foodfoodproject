@@ -1,4 +1,4 @@
-*{
+* {
     box-sizing: border-box;
 }
 
@@ -6,22 +6,26 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f5f5f5;
     color: #333;
+    margin: 0;
+    padding: 0;
 }
 
 h1 {
     color: #6a1b9a;
+    font-size: 1.8rem;
 }
 
 li {
     font-size: 0.8rem;
 }
 
-input[type="text"] {
+input[type="text"], input[type="number"] {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-size: 1rem;
 }
 
 button {
@@ -32,21 +36,20 @@ button {
     background-color: #6a1b9a;
     color: #fff;
     cursor: pointer;
+    font-size: 1rem;
 }
 
 button:hover {
     background-color: #4a148c;
 }
 
-
 .text-center {
     text-align: center;
-    left: auto;
-    right: auto;
 }
 
 .container-menu-explorer {
-    width: 80%;
+    width: 90%;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     background-color: #fff;
@@ -56,9 +59,9 @@ button:hover {
 
 #menu-bar {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    
 }
 
 #menu-bar #show-option {
@@ -67,19 +70,19 @@ button:hover {
 }
 
 #menu-show {
-    display: relative;
+    position: relative;
 }
 
-#searchBar{
+#searchBar {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px; /* Optional padding */
+    padding: 10px;
+    flex-wrap: wrap;
 }
 
-
-#searchClear{
-    margin: 0 0 0 10px;
+#searchClear {
+    margin: 10px 0 0 0;
 }
 
 .buttons {
@@ -87,73 +90,83 @@ button:hover {
 }
 
 .popup {
-
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgb(0,0,0);
     background-color: rgba(0,0,0,0.4);
 }
 
 .popup-content {
     background-color: #fff;
-    margin: 10% auto;
+    margin: 15% auto; /* 15% from the top and centered horizontally */
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
-    width: 65%;
+    width: 90%;
+    max-width: 500px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    position: fixed;
-    left: 50%;
-    transform: translate(-50%, 0);
+    position: relative;
+    animation: popupFadeIn 0.3s ease-out;
+}
+
+@keyframes popupFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .close-btn {
     color: #aaa;
-    float: right;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
     font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
 }
 
 .close-btn:hover,
 .close-btn:focus {
     color: #000;
-    text-decoration: none;
-    cursor: pointer;
 }
-
 
 .ok-button {
-    float: right;
-    font-size: 0.9rem;
+    display: block;
+    width: 100%;
+    font-size: 1rem;
     padding: 10px 30px;
+    margin-top: 20px;
 }
+
 
 .underAddPopup {
     display: flex;
-    justify-content: space-between; /* Spreads items across the width */
-    align-items: center; /* Centers items vertically */
+    flex-direction: column;
+    align-items: center;
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
-    position: relative;
 }
+
 .text-center {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    width: 100%;
+    margin-bottom: 15px;
 }
+
 .underAddPopup button {
-    margin-left: auto; /* Push the button to the right */
-    border: none;
-    padding: 10px 30px;
-    cursor: pointer;
-    border-radius: 4px;
-    
+    width: 100%;
+    margin: 10px 0;
 }
 
 .success {
@@ -163,25 +176,28 @@ button:hover {
 
 .div-menu {
     box-sizing: border-box;
-    box-shadow: 0px 0px 5px ;
+    box-shadow: 0px 0px 5px;
     border-radius: 8px;
-    margin: 15px 100px;
-    padding: 10px;
+    margin: 15px 0;
+    padding: 15px;
 }
 
 .button2 {
-    justify-content: center;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+}
+
+.button-edit, .button-delete {
+    width: 100%;
+    margin: 5px 0;
 }
 
 .button-edit {
-    width: 48%;
     background-color: white;
     border: 2px solid #6a1b9a;
-    margin: 0 0 0px 0;
     color: #6a1b9a;
 }
+
 .button-edit:hover {
     background-color: #994bca;
     border: 2px solid #994bca;
@@ -189,11 +205,91 @@ button:hover {
 }
 
 .button-delete {
-    width: 48%;
     background-color: #6a1b9a;
-    margin: 0 0 0px 0;
     color: white;
 }
+
 .button-delete:hover {
     background-color: #4a148c;
+}
+
+/* Popup form styles */
+.popup-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-form label {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.popup-form input {
+    margin-bottom: 15px;
+}
+
+/* Media Queries for Responsive Design */
+@media screen and (min-width: 768px) {
+    .container-menu-explorer {
+        width: 80%;
+    }
+
+    #searchClear {
+        margin: 0 0 0 10px;
+    }
+
+    .button2 {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .button-edit, .button-delete {
+        width: 48%;
+    }
+
+    .div-menu {
+        margin: 15px 50px;
+    }
+
+    .underAddPopup {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .underAddPopup button {
+        width: auto;
+    }
+
+    .popup-content {
+        padding: 30px;
+        margin: 10% auto; /* Adjust top margin for larger screens */
+    }
+
+    .ok-button {
+        width: auto;
+        float: right;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .container-menu-explorer {
+        width: 70%;
+    }
+
+    .div-menu {
+        margin: 15px 100px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+    .popup-content {
+        padding: 30px;
+        margin: 10% auto; /* Adjust top margin for larger screens */
+    }
+
+    .ok-button {
+        width: auto;
+        float: right;
+    }
 }
